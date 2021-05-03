@@ -1,0 +1,22 @@
+---
+- name: update web servers
+  hosts: web
+  become: yes
+
+  tasks:
+  - name: ensure port is changed
+    copy:
+      src: httpd.conf
+      dest: /etc/httpd/conf/httpd.conf
+  
+  - name: ensure SELinux is permissive
+    selinux:
+      policy: targeted
+      state: permissive      
+
+  - name: ensure code is restarted
+    service:
+      name: httpd
+      state: restarted
+...
+
